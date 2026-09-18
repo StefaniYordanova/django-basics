@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+    {% if notes %}
+        <h1>All notes:</h1>
+    {% else %}
+        <h1>No notes yet!</h1>
+    {% endif %}
+
+    {% for note in notes %}
+        <p>
+            <strong>{{ note.title }}</strong> -
+            {{ note.description }} ->
+            Priority: {{ note.priority }}
+        </p>
+    {% endfor %}
+</body>
+</html>
