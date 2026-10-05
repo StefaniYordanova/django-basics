@@ -1,0 +1,27 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    Add Book | BookHub
+{% endblock %}
+
+{% block content %}
+
+<h1>Add a New Book</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form }}
+
+    <button type="submit">
+        Create Book
+    </button>
+
+</form>
+
+<a href="{% url 'book-list' %}">
+    Cancel
+</a>
+
+{% endblock %}

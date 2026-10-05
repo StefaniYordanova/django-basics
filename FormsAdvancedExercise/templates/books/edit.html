@@ -1,0 +1,27 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    Edit Book | BookHub
+{% endblock %}
+
+{% block content %}
+
+<h1>Edit Book</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {{ form }}
+
+    <button type="submit">
+        Save Changes
+    </button>
+
+</form>
+
+<a href="{% url 'book-detail' book.slug %}">
+    Cancel
+</a>
+
+{% endblock %}

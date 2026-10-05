@@ -1,0 +1,45 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    All Books | BookHub
+{% endblock %}
+
+{% block content %}
+
+<h1>All Books</h1>
+
+<div>
+
+    {% for book in books %}
+
+        <article>
+
+            <h2>
+                {{ book.title }}
+            </h2>
+
+            <p>
+                {{ book.description }}
+            </p>
+
+            <p>
+                Genre: {{ book.genre }}
+            </p>
+
+            <a href="{% url 'book-detail' book.slug %}">
+                View Details
+            </a>
+
+        </article>
+
+    {% empty %}
+
+        <p>
+            There are no books yet.
+        </p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

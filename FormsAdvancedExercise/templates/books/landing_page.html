@@ -1,0 +1,35 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    Home | BookHub
+{% endblock %}
+
+{% block content %}
+
+<section>
+    <h1>Welcome to BookHub</h1>
+
+    <p>
+        Discover books about amazing destinations around the world.
+    </p>
+
+    <a href="{% url 'book-list' %}">
+        Explore Books
+    </a>
+</section>
+
+<section>
+    <h2>Latest Addition</h2>
+
+    <h3>{{ latest_book.title }}</h3>
+
+    <p>
+        {{ latest_book.description }}
+    </p>
+
+    <a href="{% url 'book-detail' latest_book.slug %}">
+        Read More
+    </a>
+</section>
+
+{% endblock %}

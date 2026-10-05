@@ -1,0 +1,30 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    Delete Book | BookHub
+{% endblock %}
+
+{% block content %}
+
+<h1>Delete Book</h1>
+
+<p>
+    Are you sure you want to delete
+    <strong>{{ book.title }}</strong>?
+</p>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <button type="submit">
+        Yes, Delete
+    </button>
+
+    <a href="{% url 'book-detail' book.slug %}">
+        Cancel
+    </a>
+
+</form>
+
+{% endblock %}

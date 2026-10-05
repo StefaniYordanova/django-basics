@@ -1,0 +1,73 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    {{ book.title }} | BookHub
+{% endblock %}
+
+{% block content %}
+
+<article>
+
+    <h1>
+        {{ book.title }}
+    </h1>
+
+    <p>
+        Genre: {{ book.genre }}
+    </p>
+
+    <p>
+        {{ book.description }}
+    </p>
+
+    <p>
+        Published: {{ book.published_date }}
+    </p>
+
+</article>
+
+<section>
+
+    <h2>Reviews</h2>
+
+    {% for review in book.reviews.all %}
+
+        <article>
+
+            <h3>
+                {{ review.title }}
+            </h3>
+
+            <p>
+                {{ review.content }}
+            </p>
+
+            <p>
+                Rating: {{ review.rating }}/5
+            </p>
+
+        </article>
+
+    {% empty %}
+
+        <p>
+            No reviews yet.
+        </p>
+
+    {% endfor %}
+
+</section>
+
+<div>
+
+    <a href="{% url 'book-edit' book.slug %}">
+        Edit
+    </a>
+
+    <a href="{% url 'book-delete' book.slug %}">
+        Delete
+    </a>
+
+</div>
+
+{% endblock %}

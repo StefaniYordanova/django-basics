@@ -1,0 +1,33 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    {{ review.title }} | BookHub
+{% endblock %}
+
+{% block content %}
+
+<h1>
+    {{ review.title }}
+</h1>
+
+<p>
+    Rating: {{ review.rating }}/5
+</p>
+
+<p>
+    {{ review.content }}
+</p>
+
+<p>
+    Book: {{ review.book.title }}
+</p>
+
+<a href="{% url 'review-edit' review.pk %}">
+    Edit Review
+</a>
+
+<a href="{% url 'review-delete' review.pk %}">
+    Delete Review
+</a>
+
+{% endblock %}
