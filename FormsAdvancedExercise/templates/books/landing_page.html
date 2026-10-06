@@ -6,24 +6,44 @@
 
 {% block content %}
 
-<section style="margin-bottom: 3rem; text-align: center;">
-    <h1>Welcome to BookHub</h1>
+<!-- Hero Section -->
+<section style="
+    text-align: center;
+    padding: 3.5rem 1.5rem;
+    margin-bottom: 3.5rem;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--shadow);
+">
+    <h1 style="font-size: 2.8rem; margin-bottom: 1rem;">
+        Welcome to BookHub
+    </h1>
 
-    <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-        Discover books about amazing destinations around the world.
+    <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 650px; margin: 0 auto 2rem auto; line-height: 1.7;">
+        Your cozy sanctuary to discover inspiring stories, share reviews, and organize your ultimate reading list.
     </p>
 
-    <a href="{% url 'book-list' %}" class="btn">
-        Explore Books
-    </a>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{% url 'book-list' %}" class="btn" style="font-size: 1.1rem; padding: 0.85rem 1.8rem;">
+            📚 Explore Books
+        </a>
+        <a href="{% url 'book-create' %}" class="btn btn-secondary" style="font-size: 1.1rem; padding: 0.85rem 1.8rem;">
+            ✨ Add a Book
+        </a>
+    </div>
 </section>
 
+<!-- Latest Addition Section -->
 {% if latest_book %}
-<section>
-    <h2>Latest Addition</h2>
+<section style="max-width: 500px; margin: 0 auto;">
+    <h2 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.8rem;">
+        🔥 Latest Addition
+    </h2>
 
-    <!-- Карта за най-новата книга -->
-    <article class="card" style="max-width: 400px; margin: 0 auto;">
+    <article class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
 
         {% if latest_book.image_url %}
             <div class="card-img-wrapper">
@@ -31,20 +51,24 @@
             </div>
         {% endif %}
 
-        <div class="card-info">
-            <h3 class="card-title">{{ latest_book.title }}</h3>
+        <div class="card-info" style="text-align: center; margin-top: 0.5rem;">
+            <h3 class="card-title" style="font-size: 1.4rem; margin-bottom: 0.4rem;">
+                {{ latest_book.title }}
+            </h3>
 
-            <p class="card-author">
-                Genre: {{ latest_book.genre }}
+            <p class="card-author" style="margin-bottom: 0.8rem;">
+                <span style="background: rgba(96, 165, 250, 0.15); color: var(--primary-hover); padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; font-size: 0.85rem;">
+                    {{ latest_book.genre }}
+                </span>
             </p>
 
-            <p>
+            <p style="color: var(--text-muted); line-height: 1.6; font-size: 0.98rem;">
                 {{ latest_book.description|truncatewords:20 }}
             </p>
         </div>
 
-        <div style="margin-top: 1rem;">
-            <a href="{% url 'book-detail' latest_book.slug %}" class="btn">
+        <div style="margin-top: 1.5rem; text-align: center;">
+            <a href="{% url 'book-detail' latest_book.slug %}" class="btn" style="width: 100%;">
                 Read More
             </a>
         </div>
