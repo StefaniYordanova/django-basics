@@ -8,27 +8,40 @@
 
 <h1>All Books</h1>
 
-<div>
+<!-- Добавен е клас .grid за решетката от книги -->
+<div class="grid">
 
     {% for book in books %}
 
-        <article>
+        <!-- Добавен е клас .card за стъкления ефект -->
+        <article class="card">
 
-            <h2>
-                {{ book.title }}
-            </h2>
+            <!-- Добавен е контейнер за корицата .card-img-wrapper -->
+            {% if book.image_url %}
+                <div class="card-img-wrapper">
+                    <img src="{{ book.image_url }}" alt="{{ book.title }}">
+                </div>
+            {% endif %}
 
-            <p>
-                {{ book.description }}
-            </p>
+            <div class="card-info">
+                <h2 class="card-title">
+                    {{ book.title }}
+                </h2>
 
-            <p>
-                Genre: {{ book.genre }}
-            </p>
+                <p class="card-author">
+                    Genre: {{ book.genre }}
+                </p>
 
-            <a href="{% url 'book-detail' book.slug %}">
-                View Details
-            </a>
+                <p>
+                    {{ book.description|truncatewords:15 }}
+                </p>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <a href="{% url 'book-detail' book.slug %}" class="btn">
+                    View Details
+                </a>
+            </div>
 
         </article>
 

@@ -6,25 +6,37 @@
 
 {% block content %}
 
-<h1>Delete Book</h1>
+<div class="delete-container">
 
-<p>
-    Are you sure you want to delete
-    <strong>{{ book.title }}</strong>?
-</p>
+    <div style="font-size: 3rem; margin-bottom: 0.5rem; color: var(--danger);">
+        ⚠️
+    </div>
 
-<form method="post">
+    <h1 style="color: var(--danger); font-size: 1.8rem; margin-bottom: 1rem;">
+        Delete Book
+    </h1>
 
-    {% csrf_token %}
+    <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 2rem;">
+        Are you sure you want to delete <br>
+        <strong style="color: #ffffff; font-size: 1.2rem;">"{{ book.title }}"</strong>?
+    </p>
 
-    <button type="submit">
-        Yes, Delete
-    </button>
+    <form method="post">
 
-    <a href="{% url 'book-detail' book.slug %}">
-        Cancel
-    </a>
+        {% csrf_token %}
 
-</form>
+        <div class="delete-actions">
+            <button type="submit" class="btn btn-danger">
+                Yes, Delete
+            </button>
+
+            <a href="{% url 'book-detail' book.slug %}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
 
 {% endblock %}

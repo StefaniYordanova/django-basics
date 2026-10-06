@@ -6,30 +6,51 @@
 
 {% block content %}
 
-<section>
+<section style="margin-bottom: 3rem; text-align: center;">
     <h1>Welcome to BookHub</h1>
 
-    <p>
+    <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 1.5rem;">
         Discover books about amazing destinations around the world.
     </p>
 
-    <a href="{% url 'book-list' %}">
+    <a href="{% url 'book-list' %}" class="btn">
         Explore Books
     </a>
 </section>
 
+{% if latest_book %}
 <section>
     <h2>Latest Addition</h2>
 
-    <h3>{{ latest_book.title }}</h3>
+    <!-- Карта за най-новата книга -->
+    <article class="card" style="max-width: 400px; margin: 0 auto;">
 
-    <p>
-        {{ latest_book.description }}
-    </p>
+        {% if latest_book.image_url %}
+            <div class="card-img-wrapper">
+                <img src="{{ latest_book.image_url }}" alt="{{ latest_book.title }}">
+            </div>
+        {% endif %}
 
-    <a href="{% url 'book-detail' latest_book.slug %}">
-        Read More
-    </a>
+        <div class="card-info">
+            <h3 class="card-title">{{ latest_book.title }}</h3>
+
+            <p class="card-author">
+                Genre: {{ latest_book.genre }}
+            </p>
+
+            <p>
+                {{ latest_book.description|truncatewords:20 }}
+            </p>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <a href="{% url 'book-detail' latest_book.slug %}" class="btn">
+                Read More
+            </a>
+        </div>
+
+    </article>
 </section>
+{% endif %}
 
 {% endblock %}

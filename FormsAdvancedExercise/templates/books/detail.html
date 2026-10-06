@@ -6,68 +6,83 @@
 
 {% block content %}
 
-<article>
+<div class="detail-container">
 
-    <h1>
-        {{ book.title }}
-    </h1>
+    <div class="detail-img-wrapper">
+        {% if book.image_url %}
+            <img src="{{ book.image_url }}" alt="{{ book.title }}">
+        {% else %}
 
-    <p>
-        Genre: {{ book.genre }}
-    </p>
+            <div style="height: 350px; display: flex; align-items: center; justify-content: center; color: var(--text-dark); font-weight: 600;">
+                No Cover Available
+            </div>
+        {% endif %}
+    </div>
 
-    <p>
-        {{ book.description }}
-    </p>
 
-    <p>
-        Published: {{ book.published_date }}
-    </p>
+    <div class="detail-info">
+        <h1>{{ book.title }}</h1>
 
-</article>
-
-<section>
-
-    <h2>Reviews</h2>
-
-    {% for review in book.reviews.all %}
-
-        <article>
-
-            <h3>
-                {{ review.title }}
-            </h3>
-
-            <p>
-                {{ review.content }}
-            </p>
-
-            <p>
-                Rating: {{ review.rating }}/5
-            </p>
-
-        </article>
-
-    {% empty %}
-
-        <p>
-            No reviews yet.
+        <p class="card-author" style="font-size: 1.1rem;">
+            <strong>Genre:</strong> {{ book.genre }}
         </p>
 
-    {% endfor %}
+        {% if book.publishing_date %}
+            <p style="color: var(--text-muted); font-size: 0.95rem;">
+                <strong>Published:</strong> {{ book.publishing_date }}
+            </p>
+        {% endif %}
 
+        <div style="margin-top: 1rem; line-height: 1.8; font-size: 1.05rem;">
+            <p>{{ book.description }}</p>
+        </div>
+
+
+        <div class="detail-actions">
+            <a href="{% url 'book-edit' book.slug %}" class="btn">
+                Edit Book
+            </a>
+
+            <a href="{% url 'book-delete' book.slug %}" class="btn btn-danger">
+                Delete Book
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+<section style="margin-top: 3rem;">
+    <h2>Reviews</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1rem;">
+        {% for review in book.reviews.all %}
+            <article class="review-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <h3 style="margin: 0; font-size: 1.2rem; color: #ffffff;">
+                        {{ review.title }}
+                    </h3>
+                    <span style="background: rgba(245, 158, 11, 0.2); color: var(--accent); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">
+                        ★ {{ review.rating }}/5
+                    </span>
+                </div>
+
+                <p style="color: var(--text-muted);">
+                    {{ review.body }}
+                </p>
+            </article>
+        {% empty %}
+            <p style="color: var(--text-muted); font-style: italic;">
+                No reviews yet for this book.
+            </p>
+        {% endfor %}
+    </div>
 </section>
 
-<div>
-
-    <a href="{% url 'book-edit' book.slug %}">
-        Edit
+<div style="margin-top: 2rem;">
+    <a href="{% url 'book-list' %}" class="btn btn-secondary">
+        ← Back to All Books
     </a>
-
-    <a href="{% url 'book-delete' book.slug %}">
-        Delete
-    </a>
-
 </div>
 
 {% endblock %}

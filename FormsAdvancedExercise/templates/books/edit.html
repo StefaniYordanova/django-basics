@@ -6,22 +6,28 @@
 
 {% block content %}
 
-<h1>Edit Book</h1>
+<div style="max-width: 600px; margin: 0 auto;">
 
-<form method="post">
+    <h1 style="text-align: center; margin-bottom: 2rem;">Edit Book</h1>
 
-    {% csrf_token %}
+    <form method="post">
 
-    {{ form }}
+        {% csrf_token %}
 
-    <button type="submit">
-        Save Changes
-    </button>
+        {{ form.as_p }}
 
-</form>
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 1.5rem;">
+            <button type="submit">
+                Save Changes
+            </button>
 
-<a href="{% url 'book-detail' book.slug %}">
-    Cancel
-</a>
+            <a href="{% url 'book-detail' book.slug %}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
 
 {% endblock %}

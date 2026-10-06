@@ -1,21 +1,75 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Book
+from .forms import BookCreateForm, BookEditForm, BookDeleteForm
 
 # Create your views here.
 def landing_page(request: HttpRequest) -> HttpResponse:
-    return render(request, 'books/landing_page.html')
+    latest_book = Book.objects.order_by('-publishing_date').last()
+
+    context = {
+        "latest_book": latest_book,
+    }
+
+    return render(request, 'books/landing_page.html', context)
 
 def books_list(request: HttpRequest) -> HttpResponse:
-    return render(request, 'books/list.html')
+    books = Book.objects.order_by('-publishing_date', 'title')
+
+    context = {
+        "books": books,
+    }
+
+    return render(request, 'books/list.html', context)
 
 def create_book(request: HttpRequest) -> HttpResponse:
-    return render(request, 'books/create.html')
+    form = BookCreateForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('book-list')
+
+    context = {
+        "form": form,
+    }
+
+    return render(request, 'books/create.html', context)
 
 def detail_book(request: HttpRequest, slug: slug) -> HttpResponse:
-    return render(request, 'books/detail.html')
+    book = get_object_or_404(Book, slug=slug)
+
+    context = {
+        "book": book,
+    }
+
+    return render(request, 'books/detail.html', context)
 
 def edit_book(request: HttpRequest, slug: slug) -> HttpResponse:
-    return render(request, 'books/edit.html')
+    book = get_object_or_404(Book, slug=slug)
+    form = BookEditForm(request.POST or None, instance=book)
+
+    if form.is_valid():
+        form.save()
+        return redirect('book-list')
+
+    context = {
+        "form": form,
+        "book": book,
+    }
+
+    return render(request, 'books/edit.html', context)
 
 def delete_book(request: HttpRequest, slug: slug) -> HttpResponse:
-    return render(request, 'books/delete.html')
+    book = get_object_or_404(Book, slug=slug)
+    form = BookDeleteForm(instance=book)
+
+    if request.method == "POST":
+        book.delete()
+        return redirect('book-list')
+
+    context = {
+        "form": form,
+        "book": book,
+    }
+
+    return render(request, 'books/delete.html', context)
