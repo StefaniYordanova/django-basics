@@ -52,6 +52,9 @@ class Book(models.Model):
         auto_now=True,
     )
 
+    def __str__(self) -> str:
+        return self.title
+
     def save(self, *args, **kwargs) -> None:
         self.slug = slugify(f"{self.title}-{self.author}")
         super().save(*args, **kwargs)

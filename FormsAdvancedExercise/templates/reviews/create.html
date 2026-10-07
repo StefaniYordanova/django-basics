@@ -6,26 +6,46 @@
 
 {% block content %}
 
-<h1>Add Review</h1>
+<div style="max-width: 600px; margin: 0 auto;">
 
-<p>
-    Review for: {{ book.title }}
-</p>
+    <h1 style="text-align: center; margin-bottom: 0.5rem;">Add Review</h1>
 
-<form method="post">
+    {% if book %}
+        <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
+            Reviewing: <strong style="color: #ffffff;">{{ book.title }}</strong>
+        </p>
+    {% else %}
+        <div style="margin-bottom: 2rem;"></div>
+    {% endif %}
 
-    {% csrf_token %}
+    <form method="post">
 
-    {{ form }}
+        {% csrf_token %}
 
-    <button type="submit">
-        Add Review
-    </button>
+        {{ form.as_p }}
 
-</form>
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 1.5rem;">
+            <button type="submit">
+                Add Review
+            </button>
 
-<a href="{% url 'book-detail' book.slug %}">
-    Cancel
-</a>
+            {% if book.slug %}
+                <a href="{% url 'book-detail' book.slug %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            {% elif view.kwargs.slug %}
+                <a href="{% url 'book-detail' view.kwargs.slug %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            {% else %}
+                <a href="{% url 'book-list' %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            {% endif %}
+        </div>
+
+    </form>
+
+</div>
 
 {% endblock %}

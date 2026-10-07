@@ -6,22 +6,46 @@
 
 {% block content %}
 
-<h1>Edit Review</h1>
+<div style="max-width: 600px; margin: 0 auto;">
 
-<form method="post">
+    <h1 style="text-align: center; margin-bottom: 0.5rem;">Edit Review</h1>
 
-    {% csrf_token %}
+    {% if review.book %}
+        <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;">
+            Review for: <strong style="color: #ffffff;">{{ review.book.title }}</strong>
+        </p>
+    {% else %}
+        <div style="margin-bottom: 2rem;"></div>
+    {% endif %}
 
-    {{ form }}
+    <form method="post">
 
-    <button type="submit">
-        Save Changes
-    </button>
+        {% csrf_token %}
 
-</form>
+        {{ form.as_p }}
 
-<a href="{% url 'review-detail' review.pk %}">
-    Cancel
-</a>
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 1.5rem;">
+            <button type="submit">
+                Save Changes
+            </button>
+
+            {% if review.pk %}
+                <a href="{% url 'review-detail' review.pk %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            {% elif form.instance.pk %}
+                <a href="{% url 'review-detail' form.instance.pk %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            {% else %}
+                <a href="{% url 'book-list' %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+            {% endif %}
+        </div>
+
+    </form>
+
+</div>
 
 {% endblock %}

@@ -6,28 +6,49 @@
 
 {% block content %}
 
-<h1>
-    {{ review.title }}
-</h1>
+<div class="detail-container" style="display: block; max-width: 700px; margin: 0 auto;">
 
-<p>
-    Rating: {{ review.rating }}/5
-</p>
+    <div style="margin-bottom: 1rem;">
+        <span style="color: var(--text-muted); font-size: 0.95rem;">Review for book:</span>
+        <a href="{% url 'book-detail' review.book.slug %}" style="font-weight: 700; font-size: 1.1rem; margin-left: 0.5rem;">
+            📖 {{ review.book.title }}
+        </a>
+    </div>
 
-<p>
-    {{ review.content }}
-</p>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <h1 style="margin: 0; font-size: 2rem;">
+            {{ review.title }}
+        </h1>
 
-<p>
-    Book: {{ review.book.title }}
-</p>
+        <span style="background: rgba(245, 158, 11, 0.2); color: var(--accent); border: 1px solid rgba(245, 158, 11, 0.4); padding: 0.4rem 1rem; border-radius: 20px; font-weight: 700; font-size: 1.1rem;">
+            ★ {{ review.rating }}/5
+        </span>
+    </div>
 
-<a href="{% url 'review-edit' review.pk %}">
-    Edit Review
-</a>
+    <div style="line-height: 1.8; font-size: 1.05rem; color: var(--text-main); margin-bottom: 2rem; background: rgba(255, 255, 255, 0.04); padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);">
+        <p style="margin: 0;">
+            {% if review.content %}
+                {{ review.content }}
+            {% else %}
+                {{ review.body }}
+            {% endif %}
+        </p>
+    </div>
 
-<a href="{% url 'review-delete' review.pk %}">
-    Delete Review
-</a>
+    <div class="detail-actions" style="margin-top: 2rem;">
+        <a href="{% url 'review-edit' review.pk %}" class="btn">
+            Edit Review
+        </a>
+
+        <a href="{% url 'review-delete' review.pk %}" class="btn btn-danger">
+            Delete Review
+        </a>
+
+        <a href="{% url 'book-detail' review.book.slug %}" class="btn btn-secondary" style="margin-left: auto;">
+            ← Back to Book
+        </a>
+    </div>
+
+</div>
 
 {% endblock %}

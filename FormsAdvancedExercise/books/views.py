@@ -6,10 +6,10 @@ from .forms import BookCreateForm, BookDeleteForm
 
 # Create your views here.
 def landing_page(request: HttpRequest) -> HttpResponse:
-    latest_book = Book.objects.order_by('-publishing_date').last()
+    latest_books = Book.objects.order_by('-updated_at', 'title')[:3]
 
     context = {
-        "latest_book": latest_book,
+        "latest_books": latest_books,
     }
 
     return render(request, 'books/landing_page.html', context)

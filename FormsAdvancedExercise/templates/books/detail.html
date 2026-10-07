@@ -12,13 +12,11 @@
         {% if book.image_url %}
             <img src="{{ book.image_url }}" alt="{{ book.title }}">
         {% else %}
-
             <div style="height: 350px; display: flex; align-items: center; justify-content: center; color: var(--text-dark); font-weight: 600;">
                 No Cover Available
             </div>
         {% endif %}
     </div>
-
 
     <div class="detail-info">
         <h1>{{ book.title }}</h1>
@@ -37,7 +35,6 @@
             <p>{{ book.description }}</p>
         </div>
 
-
         <div class="detail-actions">
             <a href="{% url 'book-edit' book.slug %}" class="btn">
                 Edit Book
@@ -51,29 +48,55 @@
 
 </div>
 
-
 <section style="margin-top: 3rem;">
-    <h2>Reviews</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <h2 style="margin: 0;">Reviews</h2>
 
-    <div style="display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1rem;">
+        <a href="{% url 'review-create' book.slug %}" class="btn btn-secondary">
+            + Add Review
+        </a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 1.2rem;">
         {% for review in book.reviews.all %}
-            <article class="review-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                    <h3 style="margin: 0; font-size: 1.2rem; color: #ffffff;">
-                        {{ review.title }}
-                    </h3>
-                    <span style="background: rgba(245, 158, 11, 0.2); color: var(--accent); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.9rem;">
-                        ★ {{ review.rating }}/5
-                    </span>
-                </div>
+            <article class="review-card" style="padding: 0;">
+                <!-- Full Card Clickable Link -->
+                <a href="{% url 'review-detail' review.pk %}" style="display: block; padding: 1.25rem; color: inherit; text-decoration: none; width: 100%; height: 100%;">
 
-                <p style="color: var(--text-muted);">
-                    {{ review.body }}
-                </p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; gap: 1rem; flex-wrap: wrap;">
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.2rem; color: #ffffff;">
+                                {{ review.title }}
+                            </h3>
+
+                            {% if review.author %}
+                                <p style="margin: 0.2rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">
+                                    By <strong>{{ review.author }}</strong>
+                                </p>
+                            {% elif review.user %}
+                                <p style="margin: 0.2rem 0 0 0; color: var(--text-muted); font-size: 0.9rem;">
+                                    By <strong>{{ review.user }}</strong>
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        <span style="background: rgba(245, 158, 11, 0.2); color: var(--accent); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.9rem; white-space: nowrap;">
+                            ★ {{ review.rating }}/5
+                        </span>
+                    </div>
+
+                    <p style="color: var(--text-muted); line-height: 1.6; margin: 0;">
+                        {% if review.body %}
+                            {{ review.body }}
+                        {% else %}
+                            {{ review.content }}
+                        {% endif %}
+                    </p>
+                </a>
             </article>
         {% empty %}
             <p style="color: var(--text-muted); font-style: italic;">
-                No reviews yet for this book.
+                No reviews yet for this book. Be the first to add one!
             </p>
         {% endfor %}
     </div>
