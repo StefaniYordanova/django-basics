@@ -1,7 +1,8 @@
+from django.forms.models import modelform_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book
-from .forms import BookCreateForm, BookEditForm, BookDeleteForm
+from .forms import BookCreateForm, BookDeleteForm
 
 # Create your views here.
 def landing_page(request: HttpRequest) -> HttpResponse:
@@ -46,6 +47,12 @@ def detail_book(request: HttpRequest, slug: slug) -> HttpResponse:
 
 def edit_book(request: HttpRequest, slug: slug) -> HttpResponse:
     book = get_object_or_404(Book, slug=slug)
+
+    if request.user.is_staff:
+        BookEditForm = modelform_factory(Book, fields="__all__")
+    else:
+        BookEditForm = modelform_factory(Book, exclude=['slug', 'isbn'])
+
     form = BookEditForm(request.POST or None, instance=book)
 
     if form.is_valid():
