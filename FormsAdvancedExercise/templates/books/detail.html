@@ -9,7 +9,9 @@
 <div class="detail-container">
 
     <div class="detail-img-wrapper">
-        {% if book.image_url %}
+        {% if book.image_file %}
+            <img src="{{ book.image_file.url }}" alt="{{ book.title }}">
+        {% elif book.image_url %}
             <img src="{{ book.image_url }}" alt="{{ book.title }}">
         {% else %}
             <div style="height: 350px; display: flex; align-items: center; justify-content: center; color: var(--text-dark); font-weight: 600;">
@@ -60,7 +62,6 @@
     <div style="display: flex; flex-direction: column; gap: 1.2rem;">
         {% for review in book.reviews.all %}
             <article class="review-card" style="padding: 0;">
-                <!-- Full Card Clickable Link -->
                 <a href="{% url 'review-detail' review.pk %}" style="display: block; padding: 1.25rem; color: inherit; text-decoration: none; width: 100%; height: 100%;">
 
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; gap: 1rem; flex-wrap: wrap;">

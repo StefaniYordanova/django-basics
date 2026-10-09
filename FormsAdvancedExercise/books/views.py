@@ -24,7 +24,7 @@ def books_list(request: HttpRequest) -> HttpResponse:
     return render(request, 'books/list.html', context)
 
 def create_book(request: HttpRequest) -> HttpResponse:
-    form = BookCreateForm(request.POST or None)
+    form = BookCreateForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
         form.save()

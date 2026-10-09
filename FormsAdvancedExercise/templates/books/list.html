@@ -8,16 +8,23 @@
 
 <h1>All Books</h1>
 
-
 <div class="grid">
 
     {% for book in books %}
 
         <article class="card">
 
-            {% if book.image_url %}
+            {% if book.image_file %}
+                <div class="card-img-wrapper">
+                    <img src="{{ book.image_file.url }}" alt="{{ book.title }}">
+                </div>
+            {% elif book.image_url %}
                 <div class="card-img-wrapper">
                     <img src="{{ book.image_url }}" alt="{{ book.title }}">
+                </div>
+            {% else %}
+                <div class="card-img-wrapper" style="display: flex; align-items: center; justify-content: center; height: 200px; color: var(--text-dark, #64748b); font-weight: 600;">
+                    No Cover Available
                 </div>
             {% endif %}
 

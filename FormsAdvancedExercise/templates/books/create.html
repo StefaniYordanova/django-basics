@@ -6,17 +6,107 @@
 
 {% block content %}
 
-<div style="max-width: 600px; margin: 0 auto;">
+<div style="max-width: 620px; margin: 0 auto;">
 
     <h1 style="text-align: center; margin-bottom: 2rem;">Add a New Book</h1>
 
-    <form method="post">
-
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {{ form.as_p }}
+        {% for field in form %}
+            {% if field.name != 'image_file' and field.name != 'image_url' and field.name != 'image' %}
+                <p>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </p>
+            {% endif %}
+        {% endfor %}
 
-        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 1.5rem;">
+        <div style="
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        ">
+            <label style="
+                display: block;
+                font-weight: 700;
+                font-size: 1rem;
+                color: #ffffff;
+                margin-bottom: 1.25rem;
+            ">
+                📸 Book Cover Image (Choose One Option)
+            </label>
+
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                <label style="font-size: 0.95rem; font-weight: 600; color: var(--text-muted, #cbd5e1);">
+                    Upload Image File:
+                </label>
+
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <label for="id_image_file" style="
+                        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                        color: #ffffff;
+                        font-weight: 700;
+                        font-size: 0.95rem;
+                        padding: 0.65rem 1.4rem;
+                        border-radius: 25px;
+                        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        transition: all 0.3s ease;
+                        user-select: none;
+                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(37, 99, 235, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(37, 99, 235, 0.4)';">
+                        📁 Choose File
+                    </label>
+
+                    <span id="file-chosen-name" style="color: var(--text-muted, #94a3b8); font-size: 0.9rem; font-style: italic;">
+                        No file chosen
+                    </span>
+
+                    <input type="file"
+                           name="{% if form.image_file %}image_file{% else %}image{% endif %}"
+                           id="id_image_file"
+                           style="display: none;"
+                           onchange="document.getElementById('file-chosen-name').textContent = this.files[0] ? this.files[0].name : 'No file chosen'">
+                </div>
+                {{ form.image_file.errors }}
+                {{ form.image.errors }}
+            </div>
+
+
+            <div style="
+                display: flex;
+                align-items: center;
+                text-align: center;
+                margin: 1.5rem 0;
+                color: var(--text-muted, #94a3b8);
+                font-size: 0.85rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+            ">
+                <div style="flex: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.1);"></div>
+                <span style="padding: 0 1rem;">— OR —</span>
+                <div style="flex: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.1);"></div>
+            </div>
+
+            {% if form.image_url %}
+                <div>
+                    {{ form.image_url.label_tag }}
+                    <div style="margin-top: 0.4rem;">
+                        {{ form.image_url }}
+                    </div>
+                    {{ form.image_url.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 2rem;">
             <button type="submit">
                 Create Book
             </button>

@@ -38,7 +38,6 @@
         ✨ Welcome to Your Sanctuary
     </div>
 
-
     <h1 style="
         font-size: clamp(2.5rem, 5vw, 4rem);
         font-weight: 900;
@@ -53,7 +52,6 @@
         Welcome to BookHub
     </h1>
 
-
     <p style="
         font-size: 1.25rem;
         color: var(--text-muted, #cbd5e1);
@@ -66,21 +64,27 @@
     </p>
 </section>
 
-
 {% if latest_books %}
 <section>
     <h2 style="text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">
         🔥 Recently Updated Books
     </h2>
 
-
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
         {% for book in latest_books %}
             <article class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-
-                {% if book.image_url %}
+                
+                {% if book.image_file %}
+                    <div class="card-img-wrapper">
+                        <img src="{{ book.image_file.url }}" alt="{{ book.title }}">
+                    </div>
+                {% elif book.image_url %}
                     <div class="card-img-wrapper">
                         <img src="{{ book.image_url }}" alt="{{ book.title }}">
+                    </div>
+                {% else %}
+                    <div class="card-img-wrapper" style="display: flex; align-items: center; justify-content: center; height: 200px; color: var(--text-dark, #64748b); font-weight: 600;">
+                        No Cover Available
                     </div>
                 {% endif %}
 

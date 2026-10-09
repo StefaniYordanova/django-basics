@@ -6,7 +6,7 @@ from .choices import Genres, Languages
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(
-        max_length=20,
+        max_length=60,
         unique=True,
     )
     author = models.CharField(
@@ -43,7 +43,15 @@ class Book(models.Model):
         null=True,
         blank=True,
     )
-    image_url = models.URLField()
+    image_file = models.ImageField(
+        upload_to='book_images/',
+        blank=True,
+        null=True,
+    )
+    image_url = models.URLField(
+        blank=True,
+        null=True,
+    )
     slug = models.CharField(
         max_length=100,
         blank=True,

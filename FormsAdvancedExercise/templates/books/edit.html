@@ -6,22 +6,163 @@
 
 {% block content %}
 
-<div style="max-width: 600px; margin: 0 auto;">
+<div style="max-width: 620px; margin: 0 auto;">
 
     <h1 style="text-align: center; margin-bottom: 2rem;">Edit Book</h1>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
 
         {% csrf_token %}
 
-        {{ form.as_p }}
+        {% for field in form %}
+            {% if field.name != 'image_file' and field.name != 'image_url' and field.name != 'image' %}
+                <p style="margin-bottom: 1.25rem;">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </p>
+            {% endif %}
+        {% endfor %}
 
-        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 1.5rem;">
-            <button type="submit">
-                Save Changes
+        <div style="
+            background: rgba(18, 24, 40, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin: 1.8rem 0;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        ">
+            <label style="
+                display: block;
+                font-weight: 700;
+                font-size: 1.05rem;
+                color: #ffffff;
+                margin-bottom: 1.5rem;
+            ">
+                📸 Book Cover Image (Choose One Option)
+            </label>
+
+
+            {% if book.image_file or book.image_url %}
+                <div style="margin-bottom: 1.5rem; text-align: center;">
+                    <p style="font-size: 0.85rem; color: var(--text-muted, #cbd5e1); margin-bottom: 0.5rem;">Current Cover:</p>
+                    <div style="max-width: 110px; margin: 0 auto; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.2);">
+                        {% if book.image_file %}
+                            <img src="{{ book.image_file.url }}" alt="{{ book.title }}" style="width: 100%; height: auto; display: block;">
+                        {% elif book.image_url %}
+                            <img src="{{ book.image_url }}" alt="{{ book.title }}" style="width: 100%; height: auto; display: block;">
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div style="margin-bottom: 1.25rem;">
+                <label style="
+                    display: block;
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                    color: var(--text-muted, #cbd5e1);
+                    margin-bottom: 0.75rem;
+                ">
+                    Upload Image File:
+                </label>
+
+                <div style="display: flex; align-items: center; gap: 1rem;">
+
+                    <label for="id_image_file" style="
+                        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                        color: #ffffff;
+                        font-weight: 700;
+                        font-size: 0.95rem;
+                        padding: 0.65rem 1.4rem;
+                        border-radius: 50px;
+                        box-shadow: 0 4px 18px rgba(37, 99, 235, 0.45);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        transition: all 0.3s ease;
+                        user-select: none;
+                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(37, 99, 235, 0.65)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 18px rgba(37, 99, 235, 0.45)';">
+                        📂 Choose File
+                    </label>
+
+                    <span id="file-chosen-name" style="
+                        color: var(--text-muted, #94a3b8);
+                        font-size: 0.95rem;
+                        font-style: italic;
+                    ">
+                        No file chosen
+                    </span>
+
+                    <input type="file"
+                           name="{% if form.image_file %}image_file{% else %}image{% endif %}"
+                           id="id_image_file"
+                           style="display: none;"
+                           onchange="document.getElementById('file-chosen-name').textContent = this.files[0] ? this.files[0].name : 'No file chosen'">
+                </div>
+                {{ form.image_file.errors }}
+                {{ form.image.errors }}
+            </div>
+
+            <div style="
+                display: flex;
+                align-items: center;
+                text-align: center;
+                margin: 1.75rem 0;
+                color: var(--text-muted, #94a3b8);
+                font-size: 0.85rem;
+                font-weight: 700;
+                letter-spacing: 1px;
+            ">
+                <div style="flex: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.12);"></div>
+                <span style="padding: 0 1rem;">— OR —</span>
+                <div style="flex: 1; border-bottom: 1px solid rgba(255, 255, 255, 0.12);"></div>
+            </div>
+
+            {% if form.image_url %}
+                <div>
+                    <label for="{{ form.image_url.id_for_label }}" style="
+                        display: block;
+                        font-weight: 600;
+                        font-size: 0.95rem;
+                        color: var(--text-muted, #cbd5e1);
+                        margin-bottom: 0.5rem;
+                    ">
+                        Image url:
+                    </label>
+                    {{ form.image_url }}
+                    {{ form.image_url.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 2rem;">
+            <button type="submit" class="btn" style="
+                background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+                color: #ffffff;
+                font-weight: 700;
+                font-size: 1rem;
+                padding: 0.75rem 1.8rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                cursor: pointer;
+            ">
+                Edit Book
             </button>
 
-            <a href="{% url 'book-detail' book.slug %}" class="btn btn-secondary">
+            <a href="{% url 'book-detail' book.slug %}" class="btn btn-secondary" style="
+                background: rgba(255, 255, 255, 0.08);
+                color: #ffffff;
+                font-weight: 600;
+                font-size: 1rem;
+                padding: 0.75rem 1.8rem;
+                border-radius: 10px;
+                text-decoration: none;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+            ">
                 Cancel
             </a>
         </div>
